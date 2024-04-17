@@ -1,5 +1,3 @@
-import { fileURLToPath, URL } from "node:url";
-
 import path from "path";
 import vue from "@vitejs/plugin-vue";
 import { defineConfig } from "vite";
@@ -9,16 +7,20 @@ import AutoImport from "unplugin-auto-import/vite";
 import Components from "unplugin-vue-components/vite";
 import { ElementPlusResolver } from "unplugin-vue-components/resolvers";
 import { createSvgIconsPlugin } from "vite-plugin-svg-icons";
+import ReactivityTransform from "@vue-macros/reactivity-transform/vite";
+
 const pathSrc = path.resolve(__dirname, "src");
 
 // https://vitejs.dev/config/
 export default defineConfig({
   // base: process.env.NODE_ENV === "production" ? "./" : "/",
+  define: {
+    __VUE_PROD_HYDRATION_MISMATCH_DETAILS__: false,
+  },
   base: "./",
   plugins: [
-    vue({
-      reactivityTransform: true,
-    }),
+    vue(),
+    ReactivityTransform(),
     AutoImport({
       imports: [
         "vue",
@@ -84,13 +86,13 @@ export default defineConfig({
       "/dev-api": {
         target: "http://xzsp-paishui-dev-back.cnsaas.com",
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/dev-api/, "")
+        rewrite: (path) => path.replace(/^\/dev-api/, ""),
       },
     },
   },
   resolve: {
     alias: {
-      "@": fileURLToPath(new URL("./src", import.meta.url)),
+      "@": path.resolve(__dirname, "src"),
     },
   },
 });

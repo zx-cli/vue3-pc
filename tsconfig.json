@@ -2,6 +2,8 @@
   "extends": "@vue/tsconfig/tsconfig.web.json",
   "include": ["env.d.ts", "src/**/*", "src/**/*.vue", "typings", "types"],
   "compilerOptions": {
+    "module": "es2022",
+    "skipLibCheck": true,
     "preserveValueImports": false,
     "importsNotUsedAsValues": "remove",
     "verbatimModuleSyntax": true,
@@ -10,7 +12,10 @@
       "@/*": ["./src/*"],
       "~/*": ["typings/*"]
     },
-    "types": ["element-plus/global"],
+    "types": [
+      "element-plus/global",
+      "@vue-macros/reactivity-transform/macros-global"
+    ],
     "allowJs": true
   },
   "references": [
