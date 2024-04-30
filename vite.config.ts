@@ -8,8 +8,16 @@ import Components from "unplugin-vue-components/vite";
 import { ElementPlusResolver } from "unplugin-vue-components/resolvers";
 import { createSvgIconsPlugin } from "vite-plugin-svg-icons";
 import ReactivityTransform from "@vue-macros/reactivity-transform/vite";
+import pxtovw from "postcss-px-to-viewport-8-plugin";
 
 const pathSrc = path.resolve(__dirname, "src");
+
+const loder_pxtovw = (pxtovw as any)({
+  viewportWidth: 1920,
+  viewportUnit: "vw",
+  selectorBlackList: [], // 需要忽略转换的选择器
+  // exclude: [/node_modules\/element-plus/i],
+});
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -29,6 +37,8 @@ export default defineConfig({
           "@vueuse/core": [
             // named imports
             "useMouse", // import { useMouse } from '@vueuse/core',
+            "useDateFormat",
+            "useNow",
             // alias
             ["useFetch", "useMyFetch"], // import { useFetch as useMyFetch } from '@vueuse/core',
           ],
@@ -36,7 +46,7 @@ export default defineConfig({
       ],
       // eslint报错解决
       eslintrc: {
-        enabled: false, // Default `false`
+        enabled: true, // Default `false`
         filepath: "./.eslintrc-auto-import.json", // Default `./.eslintrc-auto-import.json`
         globalsPropValue: true, // Default `true`, (true | false | 'readonly' | 'readable' | 'writable' | 'writeable')
       },
@@ -88,6 +98,16 @@ export default defineConfig({
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/dev-api/, ""),
       },
+    },
+  },
+  css: {
+    preprocessorOptions: {
+      scss: {
+        additionalData: `@use './src/assets/styles/var.scss' as *;`,
+      },
+    },
+    postcss: {
+      // plugins: [loder_pxtovw],
     },
   },
   resolve: {

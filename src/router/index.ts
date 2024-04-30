@@ -3,8 +3,8 @@ import {
   // createWebHistory,
   createWebHashHistory,
 } from "vue-router";
-import HomeView from "../views/home.vue";
-import Layout from "@/layout/index.vue";
+import Home from "@/views/home/index.vue";
+import ScreenLayout from "@/layout/sceen.vue";
 
 const router = createRouter({
   history: createWebHashHistory(import.meta.env.BASE_URL),
@@ -12,12 +12,15 @@ const router = createRouter({
     {
       path: "/",
       name: "home",
-      component: Layout,
+      component: ScreenLayout,
       redirect: "/home",
       children: [
         {
           path: "/home",
-          component: HomeView,
+          component: Home,
+          meta: {
+            name: "首页",
+          },
         },
       ],
     },
